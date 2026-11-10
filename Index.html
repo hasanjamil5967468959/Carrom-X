@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>CARROM X — Tools Store</title>
+<style>
+/* ===== রঙ ও ভেরিয়েবল ===== */
+:root {
+  --bg: #080808;
+  --panel: #141010;
+  --line: #452020;
+  --red: #ff3038;
+  --red2: #b80e1b;
+  --white: #f7f2f2;
+  --muted: #b9a5a5;
+  --gold: #ffbd66;
+  --card-bg: linear-gradient(145deg,#1b1112,#0e0b0b);
+}
+
+/* লাইট মোড কালার */
+body.light-mode {
+  --bg: #f0f2f5;
+  --panel: #ffffff;
+  --line: #d1d5db;
+  --red: #e11d48;
+  --red2: #be123c;
+  --white: #111827;
+  --muted: #4b5563;
+  --gold: #d97706;
+  --card-bg: linear-gradient(145deg, #ffffff, #f3f4f6);
+}
+
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+
+/* ===== ব্যাকগ্রাউন্ড অ্যানিমেশন ===== */
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--white);
+  font-family: Inter, Arial, sans-serif;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+  position: relative;
+}
+
+/* গ্লোয়িং অ্যানিমেশন */
+.bg-animation {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-animation span {
+  position: absolute;
+  display: block;
+  width: 20vmin;
+  height: 20vmin;
+  background: radial-gradient(circle, rgba(255,48,56,0.4) 0%, rgba(255,48,56,0) 70%);
+  border-radius: 50%;
+  animation: move 25s linear infinite;
+  bottom: -150px;
+}
+body.light-mode .bg-animation span {
+  background: radial-gradient(circle, rgba(225,29,72,0.2) 0%, rgba(225,29,72,0) 70%);
+}
+
+.bg-animation span:nth-child(1) { left: 25%; width: 80vmin; height: 80vmin; animation-duration: 30s; animation-delay: 0s; }
+.bg-animation span:nth-child(2) { left: 10%; width: 40vmin; height: 40vmin; animation-duration: 20s; animation-delay: 2s; }
+.bg-animation span:nth-child(3) { left: 70%; width: 50vmin; height: 50vmin; animation-duration: 35s; animation-delay: 4s; }
+.bg-animation span:nth-child(4) { left: 40%; width: 60vmin; height: 60vmin; animation-duration: 25s; animation-delay: 0s; }
+.bg-animation span:nth-child(5) { left: 65%; width: 20vmin; height: 20vmin; animation-duration: 15s; animation-delay: 2s; }
+
+@keyframes move {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+}
+
+/* ===== হেডার ===== */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:15px 6%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:1000;letter-spacing:2px;font-size:22px;color:var(--white)}.logo b{color:var(--red);text-shadow:0 0 18px #ff303877}
+nav{display:flex;gap:20px}nav a{color:var(--muted);text-decoration:none;font-size:13px;transition:.2s}nav a:hover{color:var(--red)}
+.theme-toggle{background:none;border:1px solid var(--line);color:var(--white);font-size:16px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:15px;transition:.2s}
+.theme-toggle:hover{border-color:var(--red)}
+.hamburger{display:none;background:none;border:0;color:var(--white);font-size:26px;cursor:pointer}
+
+@media(max-width:700px){
+  nav{position:fixed;top:60px;right:0;left:0;background:var(--panel);flex-direction:column;gap:0;padding:10px 6%;border-bottom:1px solid var(--line);transform:translateY(-150%);transition:.3s;z-index:40}
+  nav.open{transform:translateY(0)}
+  nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .hamburger{display:block}
+}
+
+/* ===== হিরো ===== */
+.hero{max-width:1200px;margin:auto;padding:78px 6% 55px;position:relative; z-index: 1;}
+.eyebrow{color:var(--red);letter-spacing:4px;font-size:11px;font-weight:900}
+h1{font-size:clamp(40px,7vw,76px);line-height:.98;margin:16px 0;font-weight:1000;letter-spacing:-2px}
+h1 em{font-style:normal;color:var(--red);text-shadow:0 0 30px #ff303855}
+.hero p{max-width:640px;color:var(--muted);line-height:1.8}
+.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:25px}
+
+/* ===== বাটন ===== */
+.btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--line);padding:12px 17px;border-radius:9px;color:var(--white);text-decoration:none;font-weight:800;background:var(--panel);cursor:pointer;transition:.2s;font-size:13px}
+.btn:hover{border-color:var(--red);box-shadow:0 0 22px rgba(255,48,56,0.2);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--red),var(--red2));border:0;color:#fff}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ===== সেকশন ===== */
+.wrap{max-width:1200px;margin:auto;padding:30px 6% 65px;position:relative; z-index:1;}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.section-head h2{font-size:30px;margin:0}.section-head p{color:var(--muted);margin:7px 0 0}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{background:var(--panel);border:1px solid var(--line);color:var(--white);padding:9px 14px;border-radius:30px;cursor:pointer;transition:.2s}
+.filter.active{border-color:var(--red);color:var(--red);background:color-mix(in srgb, var(--red) 10%, transparent)}
+
+/* ===== সার্চ বার ===== */
+.search-box{width:100%;max-width:400px;padding:12px 15px;margin-top:15px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-size:14px;outline:none;transition:.2s}
+.search-box:focus{border-color:var(--red);box-shadow:0 0 15px rgba(255,48,56,0.2)}
+
+/* ===== কার্ড গ্রিড ===== */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.28s;opacity:0;transform:translateY(18px);display:flex;flex-direction:column}
+.card.in{opacity:1;transform:translateY(0)}
+.card:hover{transform:translateY(-6px);border-color:var(--red);box-shadow:0 16px 44px rgba(0,0,0,0.4),0 0 30px rgba(255,48,56,0.15)}
+.preview{height:165px;background:radial-gradient(circle,color-mix(in srgb, var(--red) 30%, #000),var(--panel) 65%);display:grid;place-items:center;position:relative;overflow:hidden}
+.preview:before{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(255,80,80,0.2);border-radius:50%;box-shadow:0 0 50px rgba(255,48,56,0.1);animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.preview-img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:1;opacity:0.8;transition:.3s}
+.card:hover .preview-img{opacity:1;transform:scale(1.05)}
+.preview-icon{font-size:55px;z-index:1;filter:drop-shadow(0 0 15px rgba(255,48,56,0.5));transition:.3s}
+.card:hover .preview-icon{transform:scale(1.15) rotate(-6deg)}
+.tag{position:absolute;top:13px;left:13px;background:var(--panel);color:var(--red);border:1px solid var(--line);padding:6px 9px;border-radius:20px;font-size:10px;font-weight:bold;z-index:2}
+
+.card-body{padding:18px;display:flex;flex-direction:column;flex:1}
+.card h3{margin:0 0 9px}
+.card p{color:var(--muted);font-size:13px;line-height:1.65;flex:1}
+.meta{display:flex;justify-content:space-between;align-items:center;margin:15px 0;color:var(--muted);font-size:12px}
+.price{font-weight:bold;color:var(--gold)}
+.card-actions{display:flex;gap:8px}.card-actions button{flex:1;font-size:12px;padding:10px 8px}
+
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.hero{padding-top:55px}.section-head h2{font-size:25px}}
+
+/* ===== নোট / সোশ্যাল / ফুটার ===== */
+.note{margin-top:24px;padding:15px 17px;border:1px solid var(--line);background:var(--panel);border-radius:12px;color:var(--muted);font-size:13px;line-height:1.7}
+.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.social{padding:18px;border:1px solid var(--line);border-radius:13px;background:var(--panel);transition:.2s; display:flex; flex-direction:column; align-items:center; text-align:center;}
+.social:hover{border-color:var(--red);transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+.social strong{display:block;margin-bottom:8px}.social a{color:var(--red);font-size:13px;overflow-wrap:anywhere}
+
+/* Community Icons Style */
+.social-icon { width: 50px; height: 50px; margin-bottom: 12px; transition: transform 0.3s ease; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+.social:hover .social-icon { transform: scale(1.15) rotate(5deg); }
+
+@media(max-width:850px){.social-grid{grid-template-columns:1fr}}
+
+/* FAQ Styles */
+.faq-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:12px;transition:.2s}
+.faq-item:hover{border-color:var(--red)}
+.faq-item h3{margin-top:0;color:var(--red);font-size:16px}
+.faq-item p{color:var(--muted);margin-bottom:0;font-size:14px;line-height:1.6}
+
+footer{border-top:1px solid var(--line);padding:25px 6%;text-align:center;color:var(--muted);font-size:12px; position:relative; z-index:1;}
+footer b{color:var(--red);letter-spacing:1.5px}
+
+/* ===== মোডাল ===== */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px)}
+.modal.show{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal-box{max-width:560px;width:100%;max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--red);border-radius:16px;padding:23px;box-shadow:0 0 60px rgba(255,48,56,0.3);color:var(--white)}
+.modal-box h3{margin-top:0}.modal-box p{color:var(--muted);line-height:1.65}
+.close{float:right;background:none;border:0;color:var(--white);font-size:25px;cursor:pointer; transition:0.2s}
+.close:hover {color:var(--red); transform:rotate(90deg);}
+input,textarea,select{width:100%;padding:12px;margin:7px 0 13px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--white);font:inherit}
+label{font-size:12px;color:var(--muted)}
+.modal-actions{display:flex;flex-direction:column;gap:9px;margin-top:15px}
+.small{font-size:11px;color:var(--muted);line-height:1.6}
+.admin-trigger{background:none;border:0;color:var(--muted);font-size:11px;cursor:pointer}
+.admin-trigger:hover{color:var(--red)}
+
+/* ===== টোস্ট ===== */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--panel);border:1px solid var(--red);color:var(--white);padding:12px 20px;border-radius:10px;font-size:13px;z-index:200;transition:.35s;box-shadow:0 0 30px rgba(255,48,56,0.3)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* লিংক ক্লিক স্ট্যাটাস */
+.link-btn{display:flex;justify-content:space-between;align-items:center;text-decoration:none;background:var(--bg);border:1px solid var(--line);padding:12px 15px;border-radius:8px;color:var(--white);font-size:14px;transition:.2s}
+.link-btn:hover{border-color:var(--red)}
+.link-btn.done{border-color:#2e7d32;background:rgba(46,125,50,0.1);color:#4caf50}
+</style></head>
+<body>
+
+<!-- ব্যাকগ্রাউন্ড অ্যানিমেশন -->
+<div class="bg-animation">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<!-- ===== হেডার ===== -->
+<header>
+  <div class="logo">CARROM <b>X</b></div>
+  <nav id="nav">
+    <a href="#tools">Tools</a><a href="#community">Community</a><a href="#faq">FAQ</a><a href="#about">About</a>
+  </nav>
+  <div style="display:flex; align-items:center;">
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <button class="hamburger" id="hamburger">☰</button>
+  </div>
+</header>
+
+<!-- ===== হিরো ===== -->
+<section class="hero">
+  <div class="eyebrow">THE HACKER WEBSITE</div>
+  <h1>PLAY WITH HACK.<br><em>OWN THE GAME.</em></h1>
+  <p>A premium library for carrom practice guides, shot-planning resources and personal training utilities. Preview every resource before downloading.</p>
+  <div class="actions">
+    <a class="btn primary" href="#tools">Explore Library</a>
+    <a class="btn" href="#community">Join Community</a>
+  </div>
+</section>
+
+<!-- ===== টুলস ===== -->
+<main class="wrap" id="tools">
+  <div class="section-head">
+    <div>
+      <h2>Tools Library</h2>
+      <p>Browse free and premium practice resources.</p>
+      <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search tools..." oninput="renderTools(currentFilter)">
+    </div>
+    <div class="filters">
+      <button class="filter active" data-filter="all" onclick="changeFilter(this, 'all')">All</button>
+      <button class="filter" data-filter="free" onclick="changeFilter(this, 'free')">Free</button>
+      <button class="filter" data-filter="premium" onclick="changeFilter(this, 'premium')">Premium</button>
+    </div>
+  </div>
+  <div class="grid" id="toolGrid">
+    <p style="color:var(--muted)">Loading tools from database...</p>
+  </div>
+  <div class="note">Downloads are for legitimate practice guides and original utilities only. This store does not provide game cheats, modified clients, anti-cheat bypasses or tools that interfere with other players.</div>
+</main>
+
+<!-- ===== কমিউনিটি ===== -->
+<section class="wrap" id="community">
+  <div class="section-head"><div><h2>Join the Community</h2><p>Open the official community pages below.</p></div></div>
+  <div class="social-grid">
+    <!-- Telegram Channel -->
+    <div class="social">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#229ED9"/>
+        <path d="M5.49136 11.8419L18.1528 6.99443C18.7404 6.78334 19.2534 7.13883 19.0573 8.01655L18.0013 13.0136C17.9083 13.4621 17.6478 13.5577 17.2574 13.3495L15.0859 11.8514L13.9733 12.9233C13.8495 13.0431 13.7449 13.1451 13.5075 13.1451L13.6715 10.9842L17.9352 7.24886C18.1215 7.08518 17.8932 6.99171 17.6488 7.13604L12.3829 10.4221L10.2295 9.75942C9.76302 9.61312 9.75324 9.29487 10.3244 9.08819L18.5555 5.96427C18.9483 5.82183 19.2929 6.04386 19.1371 6.60567L16.9771 15.6659C16.8309 16.2604 16.4669 16.4146 15.9572 16.1413L13.2788 14.2492L11.9473 15.5279C11.7944 15.6755 11.6617 15.8101 11.3486 15.8101L11.6162 13.4535L16.4656 9.1357C16.6618 8.96284 16.4264 8.85829 16.1718 9.0112L10.2862 12.7555L7.8392 12.0054C7.24703 11.8336 7.23701 11.4254 7.94642 11.1635L18.1528 7.44742" fill="white"/>
+      </svg>
+      <strong>Telegram Channel</strong>
+      <a href="https://t.me/carrompoolhack00" target="_blank" rel="noopener">t.me/carrompoolhack00</a>
+    </div>
+
+    <!-- Telegram Group -->
+    <div class="social">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#2AABEE"/>
+        <path d="M12 6.5C9.51472 6.5 7.5 8.51472 7.5 11C7.5 13.4853 9.51472 15.5 12 15.5C14.4853 15.5 16.5 13.4853 16.5 11C16.5 8.51472 14.4853 6.5 12 6.5ZM9.5 11C9.5 9.61929 10.6193 8.5 12 8.5C13.3807 8.5 14.5 9.61929 14.5 11C14.5 12.3807 13.3807 13.5 12 13.5C10.6193 13.5 9.5 12.3807 9.5 11ZM12 16.5C10.3431 16.5 8.87005 15.717 7.88105 14.4951C7.63632 14.1901 7.18635 14.1384 6.87511 14.3749C6.56387 14.6114 6.51093 15.0594 6.75103 15.3676C8.01253 16.9925 9.8893 18 12 18C14.1107 18 15.9875 16.9925 17.249 15.3676C17.4891 15.0594 17.4361 14.6114 17.1249 14.3749C16.8137 14.1384 16.3637 14.1901 16.1189 14.4951C15.13 15.717 13.6569 16.5 12 16.5Z" fill="white"/>
+        <path d="M8.5 9.5C9.05228 9.5 9.5 9.05228 9.5 8.5C9.5 7.94772 9.05228 7.5 8.5 7.5C7.94772 7.5 7.5 7.94772 7.5 8.5C7.5 9.05228 7.94772 9.5 8.5 9.5Z" fill="white"/>
+        <path d="M15.5 9.5C16.0523 9.5 16.5 9.05228 16.5 8.5C16.5 7.94772 16.0523 7.5 15.5 7.5C14.9477 7.5 14.5 7.94772 14.5 8.5C14.5 9.05228 14.9477 9.5 15.5 9.5Z" fill="white"/>
+      </svg>
+      <strong>Telegram Group</strong>
+      <a href="https://t.me/carrompoolhackgroup" target="_blank" rel="noopener">t.me/carrompoolhackgroup</a>
+    </div>
+
+    <!-- YouTube Channel -->
+    <div class="social">
+      <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.5405 6.42001C22.2876 5.46821 21.5361 4.71668 20.5843 4.4638C18.8528 4 12 4 12 4C12 4 5.14718 4 3.41566 4.4638C2.46386 4.71668 1.71233 5.46821 1.45945 6.42001C0.995636 8.15153 0.995636 12 0.995636 12C0.995636 12 0.995636 15.8485 1.45945 17.58C1.71233 18.5318 2.46386 19.2833 3.41566 19.5362C5.14718 20 12 20 12 20C12 20 18.8528 20 20.5843 19.5362C21.5361 19.2833 22.2876 18.5318 22.5405 17.58C23.0044 15.8485 23.0044 12 23.0044 12C23.0044 12 23.0044 8.15153 22.5405 6.42001Z" fill="#FF0000"/>
+        <path d="M9.75 15.5L15.75 12L9.75 8.5V15.5Z" fill="white"/>
+      </svg>
+      <strong>YouTube Channel</strong>
+      <a href="https://youtube.com/@carrom.poolhack?si=MIbgrb0zpiS0qR52" target="_blank" rel="noopener">youtube.com/@carrom.poolhack</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="wrap" id="faq">
+  <div class="section-head"><div><h2>Frequently Asked Questions</h2><p>Common queries regarding our resources.</p></div></div>
+  <div class="faq-item">
+    <h3>How do I download a tool?</h3>
+    <p>Click on the Download button, visit the Telegram and YouTube links to unlock, and the MediaFire link will open automatically.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Do I need a Premium Key?</h3>
+    <p>Only for tools marked as "Premium". Free tools can be downloaded without any key. For premium tools, contact the admin on Telegram.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Is this safe to use?</h3>
+    <p>Yes! Our files are 100% safe practice guides and do not contain cheats or malicious software.</p>
+  </div>
+</section>
+
+<!-- ===== About ===== -->
+<section class="wrap" id="about">
+  <div class="section-head"><div><h2>About CARROM X</h2><p>A focused home for practice material.</p></div></div>
+  <p style="color:var(--muted);line-height:1.8">Preview resources, review their details and download available files.</p>
+</section>
+
+<!-- ===== ফুটার ===== -->
+<footer>
+  <b>CREATE BY HASAN CR</b><br>
+  <span>CARROM X • Practice Resource Store</span><br>
+  <button class="admin-trigger" id="secretAdmin">Admin access</button>
+</footer>
+
+<!-- ===== মোডাল ও টোস্ট ===== -->
+<div class="modal" id="modal"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+<div id="toast"></div>
+
+<!-- ==========================================
+     FIREBASE SDK
+     ========================================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCEZGS3dVZ10lQBVmT-vfQPNFVO-ISL75A",
+    authDomain: "carrom-x-3f9d2.firebaseapp.com",
+    databaseURL: "https://carrom-x-3f9d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "carrom-x-3f9d2",
+    storageBucket: "carrom-x-3f9d2.firebasestorage.app",
+    messagingSenderId: "336584721895",
+    appId: "1:336584721895:web:9887c8e9903296ce996942",
+    measurementId: "G-S3DWJBM66C"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // গ্লোবাল ভেরিয়েবল
+  window.fbDB = { db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc };
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<!-- ==========================================
+     মূল অ্যাপ্লিকেশন লজিক
+     ========================================== -->
+<script>
+let tools = [];
+let currentFilter = 'all';
+let pendingTool = null;
+let linksClicked = { tg1: false, tg2: false, yt: false };
+
+// ⚠️ এখানে তোর Telegram Username বসানো হয়েছে ⚠️
+const TELEGRAM_ID = "https://t.me/rudrohasan5967468959"; 
+
+// ===== থিম লজিক =====
+if(localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light-mode');
+  document.getElemen
